@@ -2,6 +2,7 @@
 # Copyright (C) Igor Sysoev
 # Copyright (C) Nginx, Inc.
 
+# hong: deal with configure's option
 
 help=no
 
@@ -15,6 +16,8 @@ NGX_LOCK_PATH=
 NGX_USER=
 NGX_GROUP=
 
+# hong:http://stackoverflow.com/questions/14152534/variable-expansion-in-curly-braces
+# if CC is set to non-empty value, then use it. if not, use cc
 CC=${CC:-cc}
 CPP=
 NGX_OBJS=objs
@@ -153,10 +156,21 @@ NGX_POST_CONF_MSG=
 
 opt=
 
+# hong: 'for var in list', if omit 'in list', then it will loop $@ (command-line argument list)
+# $@ doesn't include $0
+# http://tldp.org/LDP/abs/html/loops1.html
 for option
 do
+# hong: sed,  -e script, you can omit it if you have only one command in your program. But you should get used to the -e option
+#  -e   n fact, you can omit it if you have only one command in your program. But you should get used to the -e option
+#
+#  if option is like -xx=yy zz, then the sed script will replace it with -xx='yy zz'. if the option is not that form, 
+#  then do nothing, the `echo $option | sed ...` output the same as $option 
+#
+#  opt will be var which concatenate all $option
     opt="$opt `echo $option | sed -e \"s/\(--[^=]*=\)\(.* .*\)/\1'\2'/\"`"
 
+# hong: extract value from $option
     case "$option" in
         -*=*) value=`echo "$option" | sed -e 's/[-_a-zA-Z0-9]*=//'` ;;
            *) value="" ;;
@@ -323,6 +337,7 @@ NGX_CONFIGURE="$opt"
 
 if [ $help = yes ]; then
 
+# hong: output help info if asked
 cat << END
 
   --help                             print this message

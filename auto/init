@@ -2,6 +2,8 @@
 # Copyright (C) Igor Sysoev
 # Copyright (C) Nginx, Inc.
 
+# hong: test echo's ability;
+# create a makefile
 
 NGX_MAKEFILE=$NGX_OBJS/Makefile
 NGX_MODULES_C=$NGX_OBJS/ngx_modules.c
@@ -23,6 +25,10 @@ NGX_USE_PCH=
 
 # check the echo's "-n" option and "\c" capability
 
+# hong: if the command in 'if expression' success, then the condition is ture.
+# that is if echo doesn't support '\c' then echo will output 'test\c', then grep will catch 'c' and the grep succeeds, then the condition is true
+# the below lines say that, if echo doesn't support '-n' and '\c', then don't use them
+# TODO: see where uses ngx_n and ngx_c
 if echo "test\c" | grep c >/dev/null; then
 
     if echo -n test | grep n >/dev/null; then

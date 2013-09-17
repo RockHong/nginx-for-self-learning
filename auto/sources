@@ -2,6 +2,7 @@
 # Copyright (C) Igor Sysoev
 # Copyright (C) Nginx, Inc.
 
+# hong: information of source code. if define a new module, should add relative source code information of that module
 
 CORE_MODULES="ngx_core_module ngx_errlog_module ngx_conf_module"
 
@@ -503,6 +504,12 @@ HTTP_UPSTREAM_KEEPALIVE_SRCS=" \
     src/http/modules/ngx_http_upstream_keepalive_module.c"
 
 
+# hong: see http://tengine.taobao.org/book/chapter_09.html
+# below lines tell (source code) info of mail module
+# _INCS is the code directory
+# _DEPS is 
+# _MODULES is 
+# _SRCS is 
 MAIL_INCS="src/mail"
 
 MAIL_DEPS="src/mail/ngx_mail.h"
