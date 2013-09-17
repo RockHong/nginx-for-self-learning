@@ -14,8 +14,12 @@ END
 
 ngx_found=no
 
+# hong: '-n', if string is not empty, then true. the below links also talk about '-z'
+# http://www.ibm.com/developerworks/cn/linux/l-bash-test.html
+# http://tldp.org/LDP/abs/html/testconstructs.html
 if test -n "$ngx_feature_name"; then
     ngx_have_feature=`echo $ngx_feature_name \
+# hong: tr, tr a-z A-Z also works..  tr can be used to replace characters
                    | tr abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ`
 fi
 
@@ -25,6 +29,8 @@ if test -n "$ngx_feature_path"; then
     done
 fi
 
+# hong, the caller of this script will set up variables like $ngx_feature_test before calling it. 
+# for example, auto/cc/conf sets up $ngx_feature_test before calling this script.
 cat << END > $NGX_AUTOTEST.c
 
 #include <sys/types.h>
@@ -44,9 +50,11 @@ ngx_test="$CC $CC_TEST_FLAGS $CC_AUX_FLAGS $ngx_feature_inc_path \
 
 ngx_feature_inc_path=
 
+# hong: '2>&1', 'ls xxx > yyy 2>&1' is same as 'ls xxx >& yyy' 
 eval "/bin/sh -c \"$ngx_test\" >> $NGX_AUTOCONF_ERR 2>&1"
 
 
+# hong: '-x', to see if a file has execute permission or not
 if [ -x $NGX_AUTOTEST ]; then
 
     case "$ngx_feature_run" in

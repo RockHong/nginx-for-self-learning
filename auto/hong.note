@@ -1,0 +1,24 @@
+ ## calling hierarchy ##
+configure
+|_auto/options
+|_auto/init
+|_auto/sources
+|_auto/have
+|_auto/cc/conf
+|  |_auto/cc/name
+|  |  |_auto/feature
+
+
+
+
+
+
+## scripts functionality ##
+auto/feature
+	create a small program, run it, to see if some feature is supported or not. the caller will pass variables about 'what to test'(that's code of the samll program that auto/feature runs) 
+
+auto/cc/name
+	- to see if $CC can successfully compile a C program(using auto/feature).
+	- find the type of $CC. is it gcc, msvc, or others?
+
+

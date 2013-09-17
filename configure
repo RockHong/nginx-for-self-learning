@@ -11,22 +11,27 @@ export LC_ALL
 . auto/init
 . auto/sources
 
+# hong: if directory doesn't exist, make it
 test -d $NGX_OBJS || mkdir $NGX_OBJS
 
 echo > $NGX_AUTO_HEADERS_H
 echo > $NGX_AUTOCONF_ERR
 
+#hong: NGX_AUTO_CONFIG_H=$NGX_OBJS/ngx_auto_config.h
 echo "#define NGX_CONFIGURE \"$NGX_CONFIGURE\"" > $NGX_AUTO_CONFIG_H
 
 
+#hong: 'have' script will define macros. for example, the below lines will add '#define NGX_DEBUG 1' into NGX_AUTO_CONFIG_H
 if [ $NGX_DEBUG = YES ]; then
     have=NGX_DEBUG . auto/have
 fi
 
 
+#hong: -z, to see whether a variable is empty or not
 if test -z "$NGX_PLATFORM"; then
     echo "checking for OS"
 
+#hong: -s, kernel name; -r, kernel release; -m, machine hardware name
     NGX_SYSTEM=`uname -s 2>/dev/null`
     NGX_RELEASE=`uname -r 2>/dev/null`
     NGX_MACHINE=`uname -m 2>/dev/null`
