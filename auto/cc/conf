@@ -111,6 +111,7 @@ else
 fi
 
 CFLAGS="$CFLAGS $NGX_CC_OPT"
+# hong: check if link options support or not
 NGX_TEST_LD_OPT="$NGX_LD_OPT"
 
 if [ "$NGX_PLATFORM" != win32 ]; then
@@ -128,6 +129,7 @@ if [ "$NGX_PLATFORM" != win32 ]; then
         if [ $ngx_found = no ]; then
             echo $0: error: the invalid value in --with-ld-opt=\"$NGX_LD_OPT\"
             echo
+            # hong: if not support, exit
             exit 1
         fi
     fi
@@ -139,6 +141,8 @@ if [ "$NGX_PLATFORM" != win32 ]; then
     ngx_feature_incs=
     ngx_feature_path=
     ngx_feature_libs=
+    # hong: check if atomic operations are supported or not
+    # http://gcc.gnu.org/onlinedocs/gcc-4.3.5/gcc/Atomic-Builtins.html
     ngx_feature_test="long  n = 0;
                       if (!__sync_bool_compare_and_swap(&n, 0, 1))
                           return 1;
@@ -150,6 +154,8 @@ if [ "$NGX_PLATFORM" != win32 ]; then
     . auto/feature
 
 
+# hong: check if variadic macro is supported or not
+# http://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html
     if [ "$NGX_CC_NAME" = "ccc" ]; then
         echo "checking for C99 variadic macros ... disabled"
     else
@@ -167,6 +173,7 @@ if [ "$NGX_PLATFORM" != win32 ]; then
      fi
 
 
+# hong: gcc style variadic macro
     ngx_feature="gcc variadic macros"
     ngx_feature_name="NGX_HAVE_GCC_VARIADIC_MACROS"
     ngx_feature_run=yes

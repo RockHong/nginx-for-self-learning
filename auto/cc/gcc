@@ -31,11 +31,14 @@ ngx_feature_test=
 
 CC_TEST_FLAGS=
 
+# hong: to see if gcc on the machine supports -pipe or not
+# -pipe: Use pipes rather than temporary files for communication between the various stages of compilation.
 if [ $ngx_found = yes ]; then
     PIPE="-pipe"
 fi
 
 
+# hong: -mcpu is to specify cpu type. so that special instruction can be used
 case "$NGX_MACHINE" in
 
     sun4u | sun4v | sparc | sparc64 )

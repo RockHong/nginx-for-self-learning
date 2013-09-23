@@ -7,7 +7,12 @@ configure
 |_auto/cc/conf
 |  |_auto/cc/name
 |  |  |_auto/feature
-
+|  |_auto/cc/gcc
+|  |_...
+|  |_auto/feature 
+|_auto/headers
+|  |_auto/include
+|     |_auto/have_headers
 
 
 
@@ -19,6 +24,32 @@ auto/feature
 
 auto/cc/name
 	- to see if $CC can successfully compile a C program(using auto/feature).
-	- find the type of $CC. is it gcc, msvc, or others?
+	- find the type of $CC. is it gcc, msvc, or others? put the name of cc into $NGX_CC_NAME
+
+auto/define
+        - add macro into $NGX_AUTO_CONFIG_H file
+
+auto/cc/gcc
+        - main purpose is to set up CC options
+        - check gcc version
+        - check if that version of gcc supports some gcc options or not, for example, check -pipe
+        - determine additional gcc options based on cpu type; determine gcc warning options based on gcc version(high version gcc supports more warning options)
+
+auto/cc/conf
+        - find $CC
+        - check $CC options
+        - check link options
+        - check if gcc supports atomic operations, variadic macro, ... 
+
+auto/have_headers
+        - add macro into $NGX_AUTO_HEADERS_H. that macro indicates that a header file is available in the OS
+
+auto/include
+        - similar as auto/feature. write a small program to see if a header can be found on the OS or not.
+
+auto/headers
+        - if unistd.h, inttypes.h, ... can be found, then add corresponding macros into $NGX_AUTO_HEADERS_H file.
+
+
 
 
