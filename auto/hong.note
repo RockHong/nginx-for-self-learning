@@ -13,12 +13,17 @@ configure
 |_auto/headers
 |  |_auto/include
 |     |_auto/have_headers
-
+|_auto/os/conf
+|  |_auto/os/linux
+|  |_...
 
 
 
 
 ## scripts functionality ##
+auto/sources
+    - define Bash Variables for source files, like $CORE_INCS, $CORE_DEPS, $CORE_SRCS, ...
+
 auto/feature
 	create a small program, run it, to see if some feature is supported or not. the caller will pass variables about 'what to test'(that's code of the samll program that auto/feature runs) 
 
