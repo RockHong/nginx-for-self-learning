@@ -16,16 +16,60 @@ configure
 |_auto/os/conf
 |  |_auto/os/linux
 |  |_...
+|  |_auto/define
+|_auto/modules
+|_auto/lib/conf
+|  |_auto/lib/zlib/conf
+|  |_auto/lib/sha1/conf
+|  |_...
+|_auto/make
+|_auto/lib/make
+|  |_auto/lib/pcre/make
+|  |_...
+|_auto/install
+|_auto/stubs
+|_auto/summary
+
 
 
 
 
 ## scripts functionality ##
+auto/summary
+	- print out summary information for user when configure script finishs its running
+
+auto/stubs
+	- have=NGX_SUPPRESS_WARN . auto/have ; have=NGX_SMP . auto/have
+
+auto/make
+	- create a Makefile. it's in "NGX_MAKEFILE=$NGX_OBJS/Makefile". It's the Makefile which do real job.
+
+auto/install
+	- append content, "manpage:" and "manpage:" sections, into $NGX_MAKEFILE
+
+auto/lib/zlib/conf
+	- specify the lib name used when link
+ 
+auto/modules
+	- determine which source code should be used when compile
+	- create a source file, $NGX_MODULES_C, which declare a 'ngx_module_t' for each module, and define an array, 'ngx_module_t *ngx_modules[]'.
+
+
+auto/define
+	- define a macro using the passing in name and value for that macro
+
+auto/os/linux
+	- include linux-specific source code
+	- check linux version; convert it to a number
+	- to see if that version of linux support rt signal or not. if so, include relative source file
+	- to see if that version of linux supports posix_fadvise64, epoll, sendfile, sendfile64, ...(check them using auto/feature)
+
 auto/sources
-    - define Bash Variables for source files, like $CORE_INCS, $CORE_DEPS, $CORE_SRCS, ...
+        - define Bash Variables for source files, like $CORE_INCS, $CORE_DEPS, $CORE_SRCS, ...; define source file for modules, like $OPENSSL_MODULE
 
 auto/feature
-	create a small program, run it, to see if some feature is supported or not. the caller will pass variables about 'what to test'(that's code of the samll program that auto/feature runs) 
+	- create a small program, run it, to see if some feature is supported or not. the caller will pass variables about 'what to test'(that's code of the samll program that auto/feature runs) 
+	- if that feature is supported, then add corresponding macro into NGX_AUTO_CONFIG_H
 
 auto/cc/name
 	- to see if $CC can successfully compile a C program(using auto/feature).

@@ -17,17 +17,21 @@ CC_AUX_FLAGS="$cc_aux_flags -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64"
 
 
 # Linux kernel version
-
+# hong: sed -e '...' -e '...', if uname -r outpus 3.4.4-xxx then the first -e portion is matched, it will be 3*256*256+4*256+4
+# if uname output is 3.4-xxx, then the second -e portion is matched, it will be 3*256*256+4*256
+# so when using -e to specify many patterns, sed will try them in order.
 version=$((`uname -r \
     | sed -n -e 's/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\).*/ \
                                                  \1*256*256+\2*256+\3/p' \
              -e 's/^\([0-9][0-9]*\)\.\([0-9][0-9]*\).*/\1*256*256+\2*256/p'`))
 
+# hong: if $version is empty, then let it be 0
 version=${version:-0}
 
 
 # enable the rt signals on Linux between 2.2.19 and 2.6.17
 
+# hong, -a, and; -o, or
 if [ \( $version -ge 131603 -a $version -lt 132626 \) -o $EVENT_RTSIG = YES ]
 then
     echo " + rt signals found"
@@ -40,6 +44,10 @@ fi
 
 # posix_fadvise64() had been implemented in 2.5.60
 
+# hong: posix_fadvise64() can be used to operate buffer/cache when process a file
+# http://blog.yufeng.info/archives/1917#more-1917 TODO: to read, good artical
+# http://leoncom.org/?p=650719 
+# http://man7.org/linux/man-pages/man2/posix_fadvise.2.html
 if [ $version -lt 132412 ]; then
     have=NGX_HAVE_POSIX_FADVISE . auto/nohave
 fi
@@ -106,6 +114,7 @@ ngx_feature_test="int s = 0, fd = 1;
 . auto/feature
 
 
+# hong: prctl - operations on a process
 ngx_include="sys/prctl.h"; . auto/include
 
 # prctl(PR_SET_DUMPABLE)

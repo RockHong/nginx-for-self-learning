@@ -72,6 +72,7 @@ case ".$NGX_PREFIX" in
         have=NGX_PREFIX value="\"$NGX_PREFIX/\"" . auto/define
     ;;
 
+# hong: if user specify NGX_PREFIX is "!", what does that mean?
     .!)
         NGX_PREFIX=
     ;;
